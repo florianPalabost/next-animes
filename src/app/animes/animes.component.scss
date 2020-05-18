@@ -1,0 +1,38 @@
+.banniere-img {
+  width: auto;
+  height: 20vw;
+  h1 {
+    position: absolute;
+    right: 16px;
+  }
+}
+
+.synopsis {
+  max-width: 100%;
+  height: 20vw;
+  overflow-x: hidden;
+  text-align: justify;
+}
+.center-align {
+  display: flex;
+  justify-content: center;
+  button {
+    //background: aqua;
+  }
+}
+
+.no-border {
+  border: none;
+}
+
+.cursor-link {
+cursor: pointer;
+}
+//all media queries
+@media screen and (max-width: 700px) {
+  .banniere-img {
+    height: 50vw;
+  }
+}
+
+
