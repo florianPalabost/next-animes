@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {AnimesService} from "../services/animes.service";
-import {Router} from "@angular/router";
+import {FormBuilder, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -14,19 +14,20 @@ export class RegisterComponent implements OnInit {
   @Output() registered = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder,
-              private animesService: AnimesService,
+              private userService: UserService,
               private router: Router) {
     this.userForm = this.fb.group({
       username: ['', Validators.required],
-    })
+    });
   }
 
   ngOnInit(): void {
   }
 
   async registerUser() {
-    console.log(this.userForm.value);
-    await this.animesService.createUser(this.userForm.value.username);
+    // todo check if username not already exist
+    await this.userService.createUser(this.userForm.value.username);
+    // say to the parent component that we have a new register
     this.registered.emit(true);
     // await this.router.navigate(['/']);
   }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AnimesService} from "../services/animes.service";
+import {AnimesService} from '../services/animes.service';
+import {UserService} from '../services/user.service';
+import {NgxUiLoaderService} from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-animes',
@@ -10,13 +12,15 @@ export class AnimesComponent implements OnInit {
   user;
   anime;
 
-  constructor(private animesService: AnimesService) { }
+  constructor(private animesService: AnimesService, private userService: UserService, private ngxService: NgxUiLoaderService) { }
 
   async ngOnInit() {
-    this.user = await this.animesService.retrieveUser();
-    console.log(this.user);
-    // this.anime = await this.animesService.retrieveAnime();
-
+    this.ngxService.start();
+    this.user = this.userService.retrieveUser();
+    console.log('user:', this.user);
+    this.anime = await this.animesService.retrieveAnime();
+    console.log(this.anime);
+    this.ngxService.stop();
   }
 
   updateStatusAnimeUser() {
@@ -26,4 +30,10 @@ export class AnimesComponent implements OnInit {
 
   }
 
+
+  async nextAnime() {
+    this.ngxService.start();
+    this.anime = await this.animesService.retrieveAnime();
+    this.ngxService.stop();
+  }
 }
