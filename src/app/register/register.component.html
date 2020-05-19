@@ -1,0 +1,19 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center">
+  <mat-card class="box">
+    <mat-card-header>
+      <mat-card-title>Choose a username</mat-card-title>
+    </mat-card-header>
+
+    <form [formGroup]="userForm" class="example-form" (ngSubmit)="registerUser()">
+      <mat-card-content>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Username" [formControlName]="'username'">
+        </mat-form-field>
+
+      </mat-card-content>
+
+      <button mat-stroked-button color="accent" class="btn-block">Go</button>
+
+    </form>
+  </mat-card>
+</div>

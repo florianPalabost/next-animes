@@ -1,0 +1,27 @@
+<div layout="column" class="anime">
+<div *ngIf="anime?.attributes?.coverImage || anime?.attributes?.posterImage" flex class="banniere-img" [style]="'background-image:url(' +  anime.image + ')'">
+
+  <h1 *ngIf="anime?.attributes?.canonicalTitle">{{anime?.attributes?.canonicalTitle}}</h1>
+</div>
+  <div flex class="status center-align">
+    <span>Like ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="like" color="primary">favorite</mat-icon></button></span>
+    <span>Watched ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="watched">done_outline</mat-icon></button></span>
+    <span>Want to watch ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="want-to-watch">check_circle_outline</mat-icon></button></span>
+  </div>
+  <div flex class="infos">
+    <h2>Genres</h2>
+    <div layout="row">
+      <mat-chip-list *ngIf="anime?.genres">
+        <mat-chip *ngFor="let genre of anime.genres">{{genre}}</mat-chip>
+      </mat-chip-list>
+
+    </div>
+    <h2>Synopsis</h2>
+    <p *ngIf="anime?.attributes?.synopsis" class="synopsis"> {{anime?.attributes?.synopsis}}</p>
+  </div>
+  <div flex class="center-align">
+    <button mat-raised-button color="primary" (click)="nextAnime()">Next Anime
+    <mat-icon>arrow_right_alt</mat-icon>
+    </button>
+  </div>
+</div>
