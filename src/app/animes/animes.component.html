@@ -7,14 +7,23 @@
     <span>Like ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="like" color="primary">favorite</mat-icon></button></span>
     <span>Watched ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="watched">done_outline</mat-icon></button></span>
     <span>Want to watch ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="want-to-watch">check_circle_outline</mat-icon></button></span>
+
   </div>
   <div flex class="infos">
-    <h2>Genres</h2>
-    <div layout="row">
+
+    <div layout="row" style="display: inline-flex; margin-top: 1em">
+      <h3>Genres</h3>
       <mat-chip-list *ngIf="anime?.genres">
         <mat-chip *ngFor="let genre of anime.genres">{{genre}}</mat-chip>
       </mat-chip-list>
 
+    </div>
+    <div layout="row">
+      <h2>Infos</h2>
+      <p *ngIf="anime?.attributes?.averageRating">Score : <span> {{anime?.attributes?.averageRating / 10 | number }} / 10</span></p>
+      <p  *ngIf="anime?.attributes?.startDate">Year : <span> {{anime?.attributes?.startDate | date:'y'}}</span></p>
+      <p *ngIf="anime?.attributes?.status">Status  : <span> {{anime?.attributes?.status }}</span></p>
+      <p *ngIf="anime?.attributes?.episodeCount">Nb episodes  : <span> {{anime?.attributes?.episodeCount | number }}</span></p>
     </div>
     <h2>Synopsis</h2>
     <p *ngIf="anime?.attributes?.synopsis" class="synopsis"> {{anime?.attributes?.synopsis}}</p>

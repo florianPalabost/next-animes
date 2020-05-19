@@ -1,5 +1,7 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {UserService} from './user.service';
+import {Anime} from '../model/anime';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ export class AnimesService implements OnDestroy{
   countAnime = 0;
   ANIMES_API_URL = 'https://kitsu.io/api/edge/anime';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   ngOnDestroy(): void {
     localStorage.clear();
@@ -23,8 +25,7 @@ export class AnimesService implements OnDestroy{
     }
     else {
       const idRandom = Math.floor(Math.random() * this.countAnime);
-
-      response = await this.http.get(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom).toPromise();
+      response = await this.http.get(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom + '&subtype=TV').toPromise();
     }
 
     // we get 1 random of the 10 items after call endpoints
@@ -42,11 +43,19 @@ export class AnimesService implements OnDestroy{
     }
 
     // handle img anime to show
-    anime?.attributes?.coverImage !== null ?
-      anime.image = anime?.attributes?.coverImage?.original :
-      anime.image = anime?.attributes?.posterImage?.original;
+    anime.image = anime?.attributes?.coverImage !== null ?
+       anime?.attributes?.coverImage?.original :
+       anime?.attributes?.posterImage?.original;
 
+    // save anime in user animes storage
+    this.saveAnime(anime);
     return anime;
 
+  }
+
+  saveAnime(anime) {
+    const user = this.userService.retrieveUser();
+    user.animes.push(new Anime(anime));
+    localStorage.setItem('user', JSON.stringify(user));
   }
  }

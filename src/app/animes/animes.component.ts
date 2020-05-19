@@ -36,4 +36,5 @@ export class AnimesComponent implements OnInit {
     this.anime = await this.animesService.retrieveAnime();
     this.ngxService.stop();
   }
+
 }
