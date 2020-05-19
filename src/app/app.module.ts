@@ -21,7 +21,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxUiLoaderConfig, NgxUiLoaderModule} from 'ngx-ui-loader';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
-  bgsColor: 'red',
+  bgsColor: '#f55353',
   bgsOpacity: 0.5,
   bgsPosition: 'bottom-right',
   bgsSize: 60,
@@ -29,10 +29,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   blur: 5,
   delay: 0,
   fastFadeOut: true,
-  fgsColor: '#125adc',
+  fgsColor: '#0086a3',
   fgsPosition: 'center-center',
   fgsSize: 60,
-  fgsType: 'cube-grid',
+  fgsType: 'wandering-cubes',
   gap: 24,
   logoPosition: 'center-center',
   logoSize: 120,
@@ -40,7 +40,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   masterLoaderId: 'master',
   overlayBorderRadius: '0',
   overlayColor: 'rgba(40, 40, 40, 0.8)',
-  pbColor: 'red',
+  pbColor: '#3983d2',
   pbDirection: 'ltr',
   pbThickness: 3,
   hasProgressBar: true,
@@ -73,7 +73,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MatFormFieldModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxUiLoaderModule
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]
