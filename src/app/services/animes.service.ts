@@ -19,11 +19,12 @@ export class AnimesService implements OnDestroy{
     let response;
     if (this.countAnime === 0) {
       response = await this.http.get(this.ANIMES_API_URL).toPromise();
+      this.countAnime = response?.meta?.count;
     }
     else {
       const idRandom = Math.floor(Math.random() * this.countAnime);
 
-      response = await this.http.get(this.ANIMES_API_URL + 'page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom);
+      response = await this.http.get(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom).toPromise();
     }
 
     // we get 1 random of the 10 items after call endpoints
