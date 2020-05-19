@@ -17,16 +17,16 @@ export class AnimesComponent implements OnInit {
   async ngOnInit() {
     this.ngxService.start();
     this.user = this.userService.retrieveUser();
-    console.log('user:', this.user);
+
     this.anime = await this.animesService.retrieveAnime();
-    console.log(this.anime);
+
     this.ngxService.stop();
   }
 
   updateStatusAnimeUser() {
     const btn = document.querySelector('#like');
     btn.getAttribute('class') !== 'mat-icon notranslate mat-warn material-icons' ?
-    btn.setAttribute('class', 'mat-icon notranslate mat-warn material-icons'): null;
+    btn.setAttribute('class', 'mat-icon notranslate mat-warn material-icons') : null;
 
   }
 

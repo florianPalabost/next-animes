@@ -6,7 +6,7 @@
     position: absolute;
     right: 16px;
   }
-  h1:mat-dark-theme(white)
+
 }
 
 .synopsis {
@@ -18,9 +18,7 @@
 .center-align {
   display: flex;
   justify-content: center;
-  button {
-    //background: aqua;
-  }
+
 }
 
 .no-border {

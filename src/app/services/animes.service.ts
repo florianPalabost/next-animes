@@ -22,7 +22,7 @@ export class AnimesService implements OnDestroy{
     }
     else {
       const idRandom = Math.floor(Math.random() * this.countAnime);
-      console.log(idRandom);
+
       response = await this.http.get(this.ANIMES_API_URL + 'page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom);
     }
 

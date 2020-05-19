@@ -13,12 +13,10 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
     if (localStorage.getItem('user') !== null) {
       this.firstConnection = false;
-
-      console.log(this.firstConnection);
     }
   }
 
   onRegistered(registered: boolean) {
-    registered ? this.firstConnection = false : true;
+    registered ? this.firstConnection = false : this.firstConnection = true;
   }
 }
