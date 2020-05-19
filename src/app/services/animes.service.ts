@@ -20,27 +20,38 @@ export class AnimesService implements OnDestroy{
   async retrieveAnime() {
     let response;
     if (this.countAnime === 0) {
-      response = await this.http.get(this.ANIMES_API_URL).toPromise();
+      response = await this.getAnime(this.ANIMES_API_URL);
       this.countAnime = response?.meta?.count;
     }
     else {
-      const idRandom = Math.floor(Math.random() * this.countAnime);
-      response = await this.http.get(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom + '&subtype=TV').toPromise();
+      const idRandom = this.getRandomNb(this.countAnime);
+      response = await this.getAnime(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom + '&subtype=TV');
     }
 
     // we get 1 random of the 10 items after call endpoints
-    const idAnimeRand = Math.floor(Math.random() * 10);
-    const anime = response.data[idAnimeRand];
+    let idAnimeRand = this.getRandomNb(10);
+    let anime = response.data[idAnimeRand];
 
-    // handle genre of anime
-    anime.genres = [];
-    const genresResponse = await this.http.get<any>(anime.relationships?.genres?.links?.related).toPromise();
+    // todo check if user has not already seen this anime
+    const user = this.userService.retrieveUser();
 
-    if (genresResponse?.data.length > 0) {
-      genresResponse?.data.forEach(item => {
-        anime.genres.push(item?.attributes?.name);
-      });
+    let alreadySeen = this.checkAlreadySeen(anime, user.animes);
+    let i = 0;
+    while (alreadySeen === true) {
+      if (i > 10 ) {
+        idAnimeRand = this.getRandomNb(this.countAnime);
+        response = await this.getAnime(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idAnimeRand + '&subtype=TV');
+        anime = response.data[this.getRandomNb(10)];
+      }
+      else {
+        idAnimeRand = this.getRandomNb(10);
+        anime = response.data[idAnimeRand];
+      }
+      alreadySeen = this.checkAlreadySeen(anime, user.animes);
+      i++;
     }
+    // handle genres of anime
+    anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
 
     // handle img anime to show
     anime.image = anime?.attributes?.coverImage !== null ?
@@ -53,9 +64,40 @@ export class AnimesService implements OnDestroy{
 
   }
 
-  saveAnime(anime) {
+  saveAnime(anime): void {
     const user = this.userService.retrieveUser();
     user.animes.push(new Anime(anime));
     localStorage.setItem('user', JSON.stringify(user));
   }
+
+  async getAnime(url = '') {
+    return await this.http.get(url).toPromise();
+  }
+
+  getRandomNb(max: number): number {
+    return Math.floor(Math.random() * max);
+  }
+
+  checkAlreadySeen(anime = null, animes = []): boolean {
+    let seen = false;
+    animes.forEach(a => {
+        if (a.title === anime.attributes.canonicalTitle) {
+          seen = true;
+        }
+    });
+    return seen;
+  }
+
+  async retrieveGenresAnime(link = '') {
+    const genresResponse = await this.http.get<any>(link).toPromise();
+    const genres = [];
+    if (genresResponse?.data.length > 0) {
+      genresResponse?.data.forEach(item => {
+        genres.push(item?.attributes?.name);
+      });
+    }
+    return genres;
+  }
+
  }
+
