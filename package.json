@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "surge": "ng build --prod && cd dist/next-animes && surge --domain https://next-animes-flo.surge.sh"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "@angular/platform-browser": "~9.1.4",
     "@angular/platform-browser-dynamic": "~9.1.4",
     "@angular/router": "~9.1.4",
+    "@angular/service-worker": "~9.1.4",
     "@ngx-pwa/local-storage": "^9.0.3",
     "ngx-ui-loader": "^9.1.1",
     "rxjs": "~6.5.4",
