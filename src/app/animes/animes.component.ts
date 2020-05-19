@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AnimesService} from '../services/animes.service';
 import {UserService} from '../services/user.service';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
@@ -12,6 +12,8 @@ export class AnimesComponent implements OnInit {
   user;
   anime;
 
+  @Output() newAnime = new EventEmitter<string>();
+
   constructor(private animesService: AnimesService, private userService: UserService, private ngxService: NgxUiLoaderService) { }
 
   async ngOnInit() {
@@ -19,7 +21,7 @@ export class AnimesComponent implements OnInit {
     this.user = this.userService.retrieveUser();
 
     this.anime = await this.animesService.retrieveAnime();
-
+    this.newAnime.emit(this.anime.attributes.canonicalTitle);
     this.ngxService.stop();
   }
 
@@ -34,6 +36,7 @@ export class AnimesComponent implements OnInit {
   async nextAnime() {
     this.ngxService.start();
     this.anime = await this.animesService.retrieveAnime();
+    this.newAnime.emit(this.anime.attributes.canonicalTitle);
     this.ngxService.stop();
   }
 

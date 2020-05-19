@@ -32,7 +32,6 @@ export class AnimesService implements OnDestroy{
     let idAnimeRand = this.getRandomNb(10);
     let anime = response.data[idAnimeRand];
 
-    // todo check if user has not already seen this anime
     const user = this.userService.retrieveUser();
 
     let alreadySeen = this.checkAlreadySeen(anime, user.animes);

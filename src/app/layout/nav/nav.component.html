@@ -3,7 +3,7 @@
     <h1>Next Animes</h1>
     <span class="menu-spacer"></span>
     <div class="fill-remaining-space">
-      <a mat-button [routerLink]="'/animes'"> Animes </a>
+      <a mat-button *ngIf="newTitle !== ''" class="center-align"> {{newTitle}}</a>
     </div>
     <button mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
@@ -26,7 +26,7 @@
   <mat-sidenav-content>
     <div style="height: 88vh;">
       <app-register (registered)="onRegistered($event)" *ngIf="firstConnection"></app-register>
-      <app-animes *ngIf="!firstConnection"></app-animes>
+      <app-animes *ngIf="!firstConnection" (newAnime)="onNewAnime($event)"></app-animes>
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

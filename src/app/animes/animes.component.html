@@ -1,7 +1,6 @@
 <div layout="column" class="anime">
 <div *ngIf="anime?.attributes?.coverImage || anime?.attributes?.posterImage" flex class="banniere-img" [style]="'background-image:url(' +  anime.image + ')'">
 
-  <h1 *ngIf="anime?.attributes?.canonicalTitle">{{anime?.attributes?.canonicalTitle}}</h1>
 </div>
   <div flex class="status center-align">
     <span>Like ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="like" color="primary">favorite</mat-icon></button></span>

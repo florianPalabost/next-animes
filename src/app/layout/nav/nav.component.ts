@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
   firstConnection = true;
-
+  newTitle = '';
   constructor() { }
 
   ngOnInit(): void {
@@ -17,6 +17,10 @@ export class NavComponent implements OnInit {
   }
 
   onRegistered(registered: boolean) {
-    registered ? this.firstConnection = false : this.firstConnection = true;
+    this.firstConnection = !registered;
+  }
+
+  onNewAnime(newAnimeTitle: string) {
+    this.newTitle = newAnimeTitle;
   }
 }
