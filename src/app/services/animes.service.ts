@@ -70,7 +70,7 @@ export class AnimesService implements OnDestroy{
   }
 
   async getAnime(url = '') {
-    return await this.http.get(url).toPromise();
+    return await this.http.get<any>(url).toPromise();
   }
 
   getRandomNb(max: number): number {
@@ -98,5 +98,16 @@ export class AnimesService implements OnDestroy{
     return genres;
   }
 
- }
+  async retrieveAnimesWithGenre(genre: string) {
+    const animes = await this.getAnime(this.ANIMES_API_URL + '?filter[genres]=' + genre);
+    for (const anime of animes.data) {
+      anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
+
+      anime.image = anime?.attributes?.coverImage !== null ?
+        anime?.attributes?.coverImage?.original :
+        anime?.attributes?.posterImage?.original;
+    }
+    return animes;
+  }
+}
 

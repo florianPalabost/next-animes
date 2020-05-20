@@ -28,6 +28,11 @@
 .cursor-link {
 cursor: pointer;
 }
+
+.chip-genres {
+  text-decoration: none;
+  color: black;
+}
 //all media queries
 @media screen and (max-width: 700px) {
   .banniere-img {

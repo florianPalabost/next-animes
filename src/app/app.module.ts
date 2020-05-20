@@ -21,6 +21,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxUiLoaderConfig, NgxUiLoaderModule} from 'ngx-ui-loader';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { ListComponent } from './list/list.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f55353',
@@ -58,7 +60,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AppComponent,
     NavComponent,
     AnimesComponent,
-    RegisterComponent
+    RegisterComponent,
+    TruncatePipe,
+    ListComponent
   ],
   imports: [
     BrowserModule,

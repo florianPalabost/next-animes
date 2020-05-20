@@ -13,7 +13,7 @@
     <div layout="row" style="display: inline-flex; margin-top: 1em">
       <h3>Genres</h3>
       <mat-chip-list *ngIf="anime?.genres">
-        <mat-chip *ngFor="let genre of anime.genres">{{genre}}</mat-chip>
+        <mat-chip *ngFor="let genre of anime.genres" ><a class="chip-genres" [href]="'/genres/' + genre">{{genre}}</a></mat-chip>
       </mat-chip-list>
 
     </div>

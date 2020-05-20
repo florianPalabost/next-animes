@@ -1,0 +1,80 @@
+
+@media screen and (max-width: 800px) {
+  .item-animes {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 30vw;
+  }
+}
+
+
+@media screen and (min-width: 801px) and (max-width: 1000px) {
+  .item-animes {
+    display: inline-grid;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 30vw;
+    width: 50%;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    //grid-template-columns: 1fr  1fr 1fr 1fr;
+  }
+  .list {
+    display: grid;
+    width: 100%;
+
+    grid-template-rows:  auto 1fr;
+  }
+}
+
+@media screen and (min-width: 1001px){
+  .item-animes {
+    display: inline-grid;
+    white-space: nowrap;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 20vw;
+    width: 20%;
+    grid-auto-columns: max-content;
+    //grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+
+  }
+  .list {
+    display: grid;
+    width: 100%;
+    grid-template-rows:  1fr 1fr;
+    grid-gap:0;
+  }
+}
+
+.title-list {
+  text-align: center;
+  width: 100%;
+  font-size: 1.5em;
+  color: black;
+
+  z-index: 1;
+  text-shadow: 1px 0px 1px #CCCCCC, 0px 1px 1px #EEEEEE, 2px 1px 1px #CCCCCC, 1px 2px 1px #EEEEEE, 2px 2px 2px rgba(18,170,255,0);
+  max-width: 10em;
+
+  // tip to cut text if too long without js
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.center-align {
+  width: 100%;
+}
+div.mat-chip-list-wrapper {
+  justify-content: center;
+}
+.chip-genres {
+  background-color: rgba(125,125,125,0.4);
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+}

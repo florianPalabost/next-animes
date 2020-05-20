@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <h1>Next Animes</h1>
+    <h1><a href="/" style="text-decoration: none;color: white;">Next Animes</a></h1>
     <span class="menu-spacer"></span>
     <div class="fill-remaining-space">
-      <a mat-button *ngIf="newTitle !== ''" class="center-align"> {{newTitle}}</a>
+      <a mat-button *ngIf="newTitle !== ''" class="no-cursor-link center-align"> {{newTitle | truncate: widthScreen}}</a>
     </div>
     <button mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
@@ -16,9 +16,9 @@
   <mat-sidenav #sidenav mode="side" opened="false" [fixedInViewport]="true">
     <mat-nav-list>
 
-      <a mat-list-item [routerLink]="'/accounts'"> Animes </a>
-      <a mat-list-item [routerLink]="'/create-account'"> Favorites</a>
-      <a mat-list-item [routerLink]="'/contacts'"> Want to watch</a>
+      <a mat-list-item [routerLink]="'/animes'"> Animes </a>
+      <a mat-list-item [routerLink]="'/animes/favorites'"> Favorites</a>
+      <a mat-list-item [routerLink]="'/animes/want-to-watch'"> Want to watch</a>
       <a mat-list-item (click)="sidenav.toggle()" href="">Close</a>
 
     </mat-nav-list>
@@ -26,7 +26,7 @@
   <mat-sidenav-content>
     <div style="height: 88vh;">
       <app-register (registered)="onRegistered($event)" *ngIf="firstConnection"></app-register>
-      <app-animes *ngIf="!firstConnection" (newAnime)="onNewAnime($event)"></app-animes>
+      <app-animes *ngIf="!firstConnection && url === '/'" (newAnime)="onNewAnime($event)"></app-animes>
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
