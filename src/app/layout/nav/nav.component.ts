@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {ModalGenresComponent} from '../../modal-genres/modal-genres.component';
 
 @Component({
   selector: 'app-nav',
@@ -10,7 +12,8 @@ export class NavComponent implements OnInit {
   firstConnection = true;
   newTitle = '';
   url;
-  constructor(private router: ActivatedRoute) {
+  genres = ['Comedy', 'Action', 'Adventure', 'Drama', 'Sci-Fi', 'Slice of Life', 'Space', 'Mystery', 'School', 'Magic', 'Supernatural', 'Police', 'Fantasy', 'Sports', 'Ecchi', 'Romance', 'Military', 'Samurai', 'Demons', 'Mecha', 'Racing', 'Cars', 'Horror', 'Psychological', 'Thriller', 'Martial Arts'];
+  constructor(private dialog: MatDialog) {
   }
   widthScreen = window.innerWidth;
   ngOnInit(): void {
@@ -35,5 +38,16 @@ export class NavComponent implements OnInit {
 
   onNewAnime(newAnimeTitle: string) {
     this.newTitle = newAnimeTitle;
+  }
+
+
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+     genres: this.genres
+    };
+    this.dialog.open(ModalGenresComponent, dialogConfig);
   }
 }

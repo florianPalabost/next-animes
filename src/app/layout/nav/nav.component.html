@@ -6,6 +6,9 @@
       <a mat-button *ngIf="newTitle !== ''" class="no-cursor-link center-align"> {{newTitle | truncate: widthScreen}}</a>
     </div>
     <button mat-icon-button>
+      <mat-icon (click)="openDialog()"> search</mat-icon>
+    </button>
+    <button mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     </button>
   </mat-toolbar-row>

@@ -109,5 +109,17 @@ export class AnimesService implements OnDestroy{
     }
     return animes;
   }
+
+  async retriveAnimeWithTitle(title: string) {
+     let anime = await this.getAnime(this.ANIMES_API_URL + '?filter[text]=' + title);
+     anime = anime.data[0];
+     anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
+
+     anime.image = anime?.attributes?.coverImage !== null ?
+      anime?.attributes?.coverImage?.original :
+      anime?.attributes?.posterImage?.original;
+     console.log(anime);
+     return anime;
+  }
 }
 

@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Genres</h2>
+
+<mat-dialog-content>
+
+  <mat-chip-list #listGenres *ngIf="genres" class="flex-item" style="justify-content: center;">
+    <mat-chip class="chip-genres" *ngFor="let genre of genres" ><a class="" [href]="'/genres/' + genre">{{genre}}</a></mat-chip>
+  </mat-chip-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button" (click)="close()">Close</button>
+  <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
+</mat-dialog-actions>

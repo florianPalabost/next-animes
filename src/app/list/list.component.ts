@@ -46,7 +46,7 @@ export class ListComponent implements OnInit {
   }
 
 async onScroll(link) {
-  console.log('scrolled!!', link);
+  console.log(link);
   await this.goNext(link);
 }
 }
