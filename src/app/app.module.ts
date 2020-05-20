@@ -23,6 +23,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ListComponent } from './list/list.component';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f55353',
@@ -79,6 +80,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MatFormFieldModule,
     ReactiveFormsModule,
     HttpClientModule,
+    InfiniteScrollModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],

@@ -1,4 +1,8 @@
 
+.link-black {
+  color: black;
+  text-decoration: none;
+}
 @media screen and (max-width: 800px) {
   .item-animes {
     background-size: cover;
@@ -18,13 +22,12 @@
     height: 30vw;
     width: 50%;
     grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
-    //grid-template-columns: 1fr  1fr 1fr 1fr;
   }
   .list {
     display: grid;
     width: 100%;
-
-    grid-template-rows:  auto 1fr;
+    height: 20rem;
+    grid-template-rows:  auto;
   }
 }
 
@@ -44,7 +47,7 @@
   .list {
     display: grid;
     width: 100%;
-    grid-template-rows:  1fr 1fr;
+    grid-template-rows: 1fr;
     grid-gap:0;
   }
 }
@@ -78,3 +81,8 @@ div.mat-chip-list-wrapper {
   }
 
 }
+
+//.list {
+//  height: 950px;
+//  overflow-y: scroll;
+//}

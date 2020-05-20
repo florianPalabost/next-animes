@@ -1,25 +1,16 @@
 <div class="list">
-  <mat-list style="padding: 0" #animesList>
+  <mat-list style="padding: 0" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"  [infiniteScrollContainer]="'.mat-sidenav-content'"
+            [fromRoot]="true"
+            (scrolled)="onScroll(links?.next)" class="listAnimesScroll">
     <mat-list-item class="mat-list-item item-animes " *ngFor="let anime of animes" [style]="'background-image:url(' +  anime['image'] + ')'">
       <div class="flex-container column center-align">
-        <p class="flex-item title-list">{{anime['attributes'].canonicalTitle}}</p>
+        <p class="flex-item title-list"><a class="link-black" [href]="'/animes/' + anime['attributes'].canonicalTitle">{{anime['attributes'].canonicalTitle}}</a></p>
 
         <mat-chip-list #listGenres *ngIf="anime['genres']" class="flex-item" style="justify-content: center;">
           <mat-chip class="chip-genres" *ngFor="let genre of anime['genres']" ><a class="" [href]="'/genres/' + genre">{{genre}}</a></mat-chip>
         </mat-chip-list>
       </div>
-
-
-
     </mat-list-item>
   </mat-list>
-  <mat-list style="display: inline-flex">
-    <mat-list-item *ngFor="let link of links | keyvalue">
-
-      <a [href]="link.value">
-        <span mat-line>{{ link.key }}</span>
-<!--        <mat-icon>info</mat-icon>-->
-      </a>
-    </mat-list-item>
-  </mat-list>
+  <button *ngIf="links?.next" (click)="goNext(links.next)" class="mat-button">More ...</button>
 </div>
