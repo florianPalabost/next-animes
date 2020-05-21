@@ -3,6 +3,8 @@ import {AnimesService} from '../services/animes.service';
 import {UserService} from '../services/user.service';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
 import {ActivatedRoute} from '@angular/router';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {ModalYtVideoComponent} from '../modal-yt-video/modal-yt-video.component';
 
 @Component({
   selector: 'app-animes-detail',
@@ -16,7 +18,8 @@ export class AnimesDetailComponent implements OnInit {
   @Output() newAnime = new EventEmitter<string>();
 
   constructor(private animesService: AnimesService, private userService: UserService,
-              private ngxService: NgxUiLoaderService, private router: ActivatedRoute) { }
+              private ngxService: NgxUiLoaderService, private router: ActivatedRoute,
+              private dialog: MatDialog) { }
 
   async ngOnInit() {
     this.ngxService.start();
@@ -47,4 +50,27 @@ export class AnimesDetailComponent implements OnInit {
     this.ngxService.stop();
   }
 
+  playVideoYT(youtubeVideoId: any) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+
+    let relativeWidth = (window.innerWidth * 80) / 100;
+    if (window.innerWidth > 1500) {
+      relativeWidth = (1500 * 80 ) / 100;
+    } else {
+      relativeWidth = (window.innerWidth * 80 ) / 100;
+    }
+
+    const relativeHeight = (relativeWidth * 9) / 16 + 120; // 16:9 to which we add 120 px for the dialog action buttons ("close")
+    dialogConfig.width = relativeWidth + 'px';
+    dialogConfig.height = relativeHeight + 'px';
+    dialogConfig.panelClass = 'custom-modalbox';
+    dialogConfig.data = {
+      ytVideoId: youtubeVideoId
+    };
+
+    this.dialog.open(ModalYtVideoComponent, dialogConfig);
+  }
 }

@@ -1,6 +1,6 @@
 <div layout="column" class="anime">
   <div *ngIf="anime?.attributes?.coverImage || anime?.attributes?.posterImage" flex class="banniere-img" [style]="'background-image:url(' +  anime.image + ')'">
-
+    <mat-icon *ngIf="anime?.attributes?.youtubeVideoId" class="mat-icon cursor-link play-video" size="large" (click)="playVideoYT(anime?.attributes?.youtubeVideoId)">play_circle_outline</mat-icon>
   </div>
   <div flex class="status center-align">
     <span>Like ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="like" color="primary">favorite</mat-icon></button></span>

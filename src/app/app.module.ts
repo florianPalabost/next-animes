@@ -27,6 +27,7 @@ import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ModalGenresComponent } from './modal-genres/modal-genres.component';
 import { AnimesDetailComponent } from './animes-detail/animes-detail.component';
+import { ModalYtVideoComponent } from './modal-yt-video/modal-yt-video.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f55353',
@@ -68,7 +69,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     TruncatePipe,
     ListComponent,
     ModalGenresComponent,
-    AnimesDetailComponent
+    AnimesDetailComponent,
+    ModalYtVideoComponent
   ],
   imports: [
     BrowserModule,
