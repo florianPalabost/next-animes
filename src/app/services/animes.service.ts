@@ -2,6 +2,7 @@ import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
 import {Anime} from '../model/anime';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,18 @@ export class AnimesService implements OnDestroy{
   countAnime = 0;
   ANIMES_API_URL = 'https://kitsu.io/api/edge/anime';
 
+  observer = new Subject();
+  public subscriber$ = this.observer.asObservable();
+
   constructor(private http: HttpClient, private userService: UserService) { }
 
   ngOnDestroy(): void {
     localStorage.clear();
+  }
+
+  emitTitle(data) {
+    console.log(data);
+    this.observer.next(data);
   }
 
   async retrieveAnime() {

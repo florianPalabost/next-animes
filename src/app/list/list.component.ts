@@ -23,13 +23,12 @@ export class ListComponent implements OnInit {
       this.animes = this.responseAnimes.data;
       this.links = this.responseAnimes.links;
 
-      console.log(this.links);
       this.ngxService.stop();
     });
   }
 
   async goNext(link: string) {
-    this.ngxService.start();
+    this.ngxService.startBackground();
     // todo refactor, put this code in the anime service (code between start & stop)
     const response = await this.animesService.getAnime(link);
     for (const anime of response.data) {
@@ -42,7 +41,7 @@ export class ListComponent implements OnInit {
     this.animes = [...this.animes, ...response.data];
     this.links = response.links;
 
-    this.ngxService.stop();
+    this.ngxService.stopBackground();
   }
 
 async onScroll(link) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ModalGenresComponent} from '../../modal-genres/modal-genres.component';
+import {AnimesService} from '../../services/animes.service';
 
 @Component({
   selector: 'app-nav',
@@ -13,7 +13,7 @@ export class NavComponent implements OnInit {
   newTitle = '';
   url;
   genres = ['Comedy', 'Action', 'Adventure', 'Drama', 'Sci-Fi', 'Slice of Life', 'Space', 'Mystery', 'School', 'Magic', 'Supernatural', 'Police', 'Fantasy', 'Sports', 'Ecchi', 'Romance', 'Military', 'Samurai', 'Demons', 'Mecha', 'Racing', 'Cars', 'Horror', 'Psychological', 'Thriller', 'Martial Arts'];
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private animesService: AnimesService) {
   }
   widthScreen = window.innerWidth;
   ngOnInit(): void {
@@ -30,6 +30,10 @@ export class NavComponent implements OnInit {
     if (localStorage.getItem('user') !== null) {
       this.firstConnection = false;
     }
+
+    this.animesService.subscriber$.subscribe((data: string) => {
+      this.newTitle = data;
+    });
   }
 
   onRegistered(registered: boolean) {

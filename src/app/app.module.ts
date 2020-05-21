@@ -26,7 +26,7 @@ import { ListComponent } from './list/list.component';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ModalGenresComponent } from './modal-genres/modal-genres.component';
-import { AnimesDetailComponent } from './animes/animes-detail/animes-detail.component';
+import { AnimesDetailComponent } from './animes-detail/animes-detail.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f55353',

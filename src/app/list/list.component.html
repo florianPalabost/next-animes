@@ -1,7 +1,5 @@
 <div class="list">
-  <mat-list style="padding: 0" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"  [infiniteScrollContainer]="'.mat-sidenav-content'"
-            [fromRoot]="true"
-            (scrolled)="onScroll(links?.next)" class="listAnimesScroll">
+  <mat-list style="padding: 0"  class="listAnimesScroll">
     <mat-list-item class="mat-list-item item-animes " *ngFor="let anime of animes" [style]="'background-image:url(' +  anime['image'] + ')'">
       <div class="flex-container column center-align">
         <p class="flex-item title-list"><a class="link-black" [href]="'/animes/' + anime['attributes'].canonicalTitle">{{anime['attributes'].canonicalTitle}}</a></p>
@@ -12,5 +10,8 @@
       </div>
     </mat-list-item>
   </mat-list>
+  <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"  [infiniteScrollContainer]="'.mat-sidenav-content'"
+       [fromRoot]="true"
+       (scrolled)="onScroll(links?.next)"></div>
   <button *ngIf="links?.next" (click)="goNext(links.next)" class="mat-button">More ...</button>
 </div>

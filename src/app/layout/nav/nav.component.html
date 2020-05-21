@@ -29,7 +29,7 @@
   <mat-sidenav-content>
     <div style="height: 88vh;">
       <app-register (registered)="onRegistered($event)" *ngIf="firstConnection"></app-register>
-      <app-animes *ngIf="!firstConnection && url === '/'" (newAnime)="onNewAnime($event)"></app-animes>
+      <app-animes-detail *ngIf="!firstConnection && (url === '/') " (newAnime)="onNewAnime($event)"></app-animes-detail>
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
