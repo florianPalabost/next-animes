@@ -17,11 +17,28 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.router.paramMap.subscribe(async params => {
-      this.genre = params.get('genre');
       this.ngxService.start();
-      this.responseAnimes = await this.animesService.retrieveAnimesWithGenre(this.genre);
-      this.animes = this.responseAnimes.data;
-      this.links = this.responseAnimes.links;
+      if (!params.get('genre')) {
+        if (params.get('title') !== '') {
+          this.responseAnimes = await this.animesService.retriveAnimesWithTitle(params.get('title'));
+        }
+        else {
+          if (params.get('genres') !== '' ) {
+            this.responseAnimes = await this.animesService.retrieveAnimesWithGenres(params.get('genres'));
+          }
+        }
+        this.animesService.emitUrl('animes/search');
+      }
+      else {
+        if (params.get('genre') !== '') {
+          this.genre = params.get('genre');
+          this.responseAnimes = await this.animesService.retrieveAnimesWithGenre(this.genre);
+        }
+      }
+
+
+      this.animes = this.responseAnimes?.data;
+      this.links = this.responseAnimes?.links;
 
       this.ngxService.stop();
     });
@@ -45,7 +62,6 @@ export class ListComponent implements OnInit {
   }
 
 async onScroll(link) {
-  console.log(link);
   await this.goNext(link);
 }
 }

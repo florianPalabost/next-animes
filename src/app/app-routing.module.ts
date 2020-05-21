@@ -6,6 +6,7 @@ import {AnimesDetailComponent} from './animes-detail/animes-detail.component';
 // todo gen animesList component to explorate alphabet order anime ?
 const routes: Routes = [
   { path: 'animes/:title', component: AnimesDetailComponent},
+  { path: 'animes/search/:title/:genres', component: ListComponent},
   { path: 'genres/:genre', component: ListComponent },
 ];
 

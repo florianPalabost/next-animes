@@ -15,6 +15,9 @@ export class AnimesService implements OnDestroy{
   observer = new Subject();
   public subscriber$ = this.observer.asObservable();
 
+  urlObserver = new Subject();
+  public urlSubscriber$ = this.urlObserver.asObservable();
+
   constructor(private http: HttpClient, private userService: UserService) { }
 
   ngOnDestroy(): void {
@@ -22,8 +25,11 @@ export class AnimesService implements OnDestroy{
   }
 
   emitTitle(data) {
-    console.log(data);
     this.observer.next(data);
+  }
+
+  emitUrl(data) {
+    this.urlObserver.next(data);
   }
 
   async retrieveAnime() {
@@ -127,8 +133,30 @@ export class AnimesService implements OnDestroy{
      anime.image = anime?.attributes?.coverImage !== null ?
       anime?.attributes?.coverImage?.original :
       anime?.attributes?.posterImage?.original;
-     console.log(anime);
      return anime;
+  }
+
+  async retriveAnimesWithTitle(title: string) {
+    const animes = await this.getAnime(this.ANIMES_API_URL + '?filter[text]=' + title);
+    for (const anime of animes.data) {
+      anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
+      anime.image = anime?.attributes?.coverImage !== null ?
+        anime?.attributes?.coverImage?.original :
+        anime?.attributes?.posterImage?.original;
+    }
+    return animes;
+  }
+
+  async retrieveAnimesWithGenres(genres: string) {
+    const animes = await this.getAnime(this.ANIMES_API_URL + '?filter[genres]=' + genres);
+    for (const anime of animes.data) {
+      anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
+
+      anime.image = anime?.attributes?.coverImage !== null ?
+        anime?.attributes?.coverImage?.original :
+        anime?.attributes?.posterImage?.original;
+    }
+    return animes;
   }
 }
 

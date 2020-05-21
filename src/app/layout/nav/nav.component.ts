@@ -34,6 +34,10 @@ export class NavComponent implements OnInit {
     this.animesService.subscriber$.subscribe((data: string) => {
       this.newTitle = data;
     });
+
+    this.animesService.urlSubscriber$.subscribe((data: string) => {
+      this.url = data;
+    });
   }
 
   onRegistered(registered: boolean) {
@@ -52,6 +56,8 @@ export class NavComponent implements OnInit {
     dialogConfig.data = {
      genres: this.genres
     };
+    dialogConfig.width = '500px';
+    dialogConfig.height = '500px';
     this.dialog.open(ModalGenresComponent, dialogConfig);
   }
 }
