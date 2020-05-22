@@ -47,13 +47,11 @@ export class ListComponent implements OnInit {
     this.ngxService.startBackground();
     // todo refactor, put this code in the anime service (code between start & stop)
     const response = await this.animesService.getAnime(link);
-    for (const anime of response.data) {
+    await Promise.all(response?.data.map(async (anime) => {
       anime.genres = await this.animesService.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
+      anime.image = this.animesService.handleImageAnime(anime);
+    }));
 
-      anime.image = anime?.attributes?.coverImage !== null ?
-        anime?.attributes?.coverImage?.original :
-        anime?.attributes?.posterImage?.original;
-    }
     this.animes = [...this.animes, ...response.data];
     this.links = response.links;
 
