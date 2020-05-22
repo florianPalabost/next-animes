@@ -1,12 +1,12 @@
-<h2 mat-dialog-title>Genres</h2>
+<h2 mat-dialog-title>Filtres</h2>
 
-<mat-dialog-content>
+<mat-dialog-content style="overflow: inherit;">
 
   <form [formGroup]="formFilter">
     <mat-form-field>
       <input matInput formControlName="title" type="text" placeholder="Title">
     </mat-form-field>
-    <mat-selection-list *ngIf="genres.length > 0" [multiple]="true" formControlName="genresSelected" >
+    <mat-selection-list class="select" *ngIf="genres.length > 0" [multiple]="true" formControlName="genresSelected" style="    max-height: 20vw; overflow: scroll;" >
       <mat-list-option checkboxPosition="before" *ngFor="let genre of genres" [value]="genre">
         {{genre}}
       </mat-list-option>

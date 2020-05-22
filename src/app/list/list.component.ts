@@ -20,11 +20,11 @@ export class ListComponent implements OnInit {
       this.ngxService.start();
       if (!params.get('genre')) {
         if (params.get('title') !== '') {
-          this.responseAnimes = await this.animesService.retriveAnimesWithTitle(params.get('title'));
+          this.responseAnimes = await this.animesService.retrievesAnimes('title', params.get('title'));
         }
         else {
           if (params.get('genres') !== '' ) {
-            this.responseAnimes = await this.animesService.retrieveAnimesWithGenres(params.get('genres'));
+            this.responseAnimes = await this.animesService.retrievesAnimes('genres', params.get('genres'));
           }
         }
         this.animesService.emitUrl('animes/search');
@@ -32,10 +32,9 @@ export class ListComponent implements OnInit {
       else {
         if (params.get('genre') !== '') {
           this.genre = params.get('genre');
-          this.responseAnimes = await this.animesService.retrieveAnimesWithGenre(this.genre);
+          this.responseAnimes = await this.animesService.retrievesAnimes('genres', this.genre);
         }
       }
-
 
       this.animes = this.responseAnimes?.data;
       this.links = this.responseAnimes?.links;

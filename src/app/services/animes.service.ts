@@ -12,6 +12,7 @@ export class AnimesService implements OnDestroy{
   countAnime = 0;
   ANIMES_API_URL = 'https://kitsu.io/api/edge/anime';
 
+  // title observer
   observer = new Subject();
   public subscriber$ = this.observer.asObservable();
 
@@ -35,12 +36,12 @@ export class AnimesService implements OnDestroy{
   async retrieveAnime() {
     let response;
     if (this.countAnime === 0) {
-      response = await this.getAnime(this.ANIMES_API_URL);
+      response = await this.getAnime(this.ANIMES_API_URL + '?filter[subtype]=TV');
       this.countAnime = response?.meta?.count;
     }
     else {
       const idRandom = this.getRandomNb(this.countAnime);
-      response = await this.getAnime(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom + '&subtype=TV');
+      response = await this.getAnime(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idRandom + '&filter[subtype]=TV');
     }
 
     // we get 1 random of the 10 items after call endpoints
@@ -54,7 +55,7 @@ export class AnimesService implements OnDestroy{
     while (alreadySeen === true) {
       if (i > 10 ) {
         idAnimeRand = this.getRandomNb(this.countAnime);
-        response = await this.getAnime(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idAnimeRand + '&subtype=TV');
+        response = await this.getAnime(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idAnimeRand + '&filter[subtype]=TV');
         anime = response.data[this.getRandomNb(10)];
       }
       else {
@@ -68,9 +69,7 @@ export class AnimesService implements OnDestroy{
     anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
 
     // handle img anime to show
-    anime.image = anime?.attributes?.coverImage !== null ?
-       anime?.attributes?.coverImage?.original :
-       anime?.attributes?.posterImage?.original;
+    anime.image = this.handleImageAnime(anime);
 
     // save anime in user animes storage
     this.saveAnime(anime);
@@ -82,6 +81,12 @@ export class AnimesService implements OnDestroy{
     const user = this.userService.retrieveUser();
     user.animes.push(new Anime(anime));
     localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  handleImageAnime(anime) {
+    return anime?.attributes?.coverImage !== null ?
+      anime?.attributes?.coverImage?.original :
+      anime?.attributes?.posterImage?.original;
   }
 
   async getAnime(url = '') {
@@ -113,50 +118,22 @@ export class AnimesService implements OnDestroy{
     return genres;
   }
 
-  async retrieveAnimesWithGenre(genre: string) {
-    const animes = await this.getAnime(this.ANIMES_API_URL + '?filter[genres]=' + genre);
-    for (const anime of animes.data) {
-      anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
+  /**
+   * get animes from filters
+   * @param type can be equal to title || genres
+   * @param param value
+   */
+  async retrievesAnimes(type: string, param: string) {
+    const link = type === 'title' ? this.ANIMES_API_URL + '?filter[text]=' + param :
+      this.ANIMES_API_URL + '?filter[genres]=' + param + '&filter[subtype]=TV';
 
-      anime.image = anime?.attributes?.coverImage !== null ?
-        anime?.attributes?.coverImage?.original :
-        anime?.attributes?.posterImage?.original;
-    }
+    const animes = await this.getAnime(link);
+    await Promise.all(animes.data.map(async (anime) => {
+      anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
+      anime.image = this.handleImageAnime(anime);
+    }));
     return animes;
   }
 
-  async retriveAnimeWithTitle(title: string) {
-     let anime = await this.getAnime(this.ANIMES_API_URL + '?filter[text]=' + title);
-     anime = anime.data[0];
-     anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
-
-     anime.image = anime?.attributes?.coverImage !== null ?
-      anime?.attributes?.coverImage?.original :
-      anime?.attributes?.posterImage?.original;
-     return anime;
-  }
-
-  async retriveAnimesWithTitle(title: string) {
-    const animes = await this.getAnime(this.ANIMES_API_URL + '?filter[text]=' + title);
-    for (const anime of animes.data) {
-      anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
-      anime.image = anime?.attributes?.coverImage !== null ?
-        anime?.attributes?.coverImage?.original :
-        anime?.attributes?.posterImage?.original;
-    }
-    return animes;
-  }
-
-  async retrieveAnimesWithGenres(genres: string) {
-    const animes = await this.getAnime(this.ANIMES_API_URL + '?filter[genres]=' + genres);
-    for (const anime of animes.data) {
-      anime.genres = await this.retrieveGenresAnime(anime.relationships?.genres?.links?.related);
-
-      anime.image = anime?.attributes?.coverImage !== null ?
-        anime?.attributes?.coverImage?.original :
-        anime?.attributes?.posterImage?.original;
-    }
-    return animes;
-  }
 }
 

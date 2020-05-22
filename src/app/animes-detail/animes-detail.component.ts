@@ -27,7 +27,7 @@ export class AnimesDetailComponent implements OnInit {
 
     this.router.paramMap.subscribe(async params => {
       const title = params.get('title');
-      this.anime = title === null ? await this.animesService.retrieveAnime() : await this.animesService.retriveAnimeWithTitle(title);
+      this.anime = title === null ? await this.animesService.retrieveAnime() : await this.animesService.retrievesAnimes('title', title).then(resp => resp?.data[0]);
       this.animesService.emitTitle(this.anime?.attributes?.canonicalTitle);
     });
 
@@ -46,7 +46,7 @@ export class AnimesDetailComponent implements OnInit {
     this.ngxService.start();
     this.anime = await this.animesService.retrieveAnime();
     this.animesService.emitTitle(this.anime?.attributes?.canonicalTitle);
-    // console.log('next title', this.anime?.attributes?.canonicalTitle);
+
     this.ngxService.stop();
   }
 
