@@ -11,6 +11,7 @@ import {NgxUiLoaderService} from 'ngx-ui-loader';
 export class ListStatusComponent implements OnInit {
   animes: any = [];
   page = 0;
+  animesYet = 0;
   max = 0;
   status = '';
 
@@ -20,27 +21,25 @@ export class ListStatusComponent implements OnInit {
     this.ngxService.start();
     this.router.paramMap.subscribe(async params => {
       this.status = params.get('status');
-      console.log('status', this.status);
       [this.animes, this.max] = this.animesService.retrieveLocalAnimesWithStatus(this.status, 0);
       this.animesService.emitUrl('animes/status');
-      // todo pagination
 
-      // todo max dont take the last entry so max += 1
-      console.log('max', this.max);
-      console.log('animes', this.animes);
+      this.animesYet = this.max - this.animes?.length;
+      //  max dont take the last entry so max += 1
       this.ngxService.stop();
     });
   }
 
-  async goNext() {
+  goNext() {
     this.ngxService.startBackground();
-    const newAnimes = this.animesService.retrieveLocalAnimesWithStatus(this.status, this.page++);
-    this.animes = newAnimes?.length > 0 ? [...this.animes, ...newAnimes] : this.animes;
+    this.page++;
+    [this.animes, this.max] =  this.animesService.retrieveLocalAnimesWithStatus(this.status, this.page);
+    this.animesYet = this.max - this.animes?.length;
     this.ngxService.stopBackground();
   }
 
-  async onScroll() {
-    await this.goNext();
+  onScroll() {
+    this.goNext();
   }
 
 }

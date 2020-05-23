@@ -13,5 +13,5 @@
   <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"  [infiniteScrollContainer]="'.mat-sidenav-content'"
        [fromRoot]="true"
        (scrolled)="onScroll()"></div>
-  <button *ngIf="max >= 20" (click)="goNext()" class="mat-button">More ...</button>
+  <button *ngIf="animesYet > 0" (click)="goNext()" class="mat-button">More ...</button>
 </div>

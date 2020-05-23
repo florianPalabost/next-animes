@@ -146,12 +146,10 @@ export class AnimesService implements OnDestroy{
   }
 
   updateAnime(anime) {
-    console.log('update', anime);
     const user = this.userService.retrieveUser();
     let ctr = 0;
     user.animes.forEach((a, i) => {
       if (a.title === anime?.canonicalTitle ||  a.title === anime?.title) {
-        console.log('oui');
         ctr++;
         user.animes[i] = anime;
       }
@@ -160,7 +158,6 @@ export class AnimesService implements OnDestroy{
       user.animes.push(new Anime(anime));
     }
     localStorage.setItem('user', JSON.stringify(user));
-    // find anime
   }
 
   retrieveLocal(title: string) {
@@ -176,6 +173,8 @@ export class AnimesService implements OnDestroy{
   retrieveLocalAnimesWithStatus(status: string, page: number) {
     const user = this.userService.retrieveUser();
     let field = null;
+    const nbItemByPage = 3;
+
     switch (status) {
       case 'favorite':
         field = 'userLike';
@@ -187,14 +186,13 @@ export class AnimesService implements OnDestroy{
         field = 'userWantToWatch';
         break;
     }
-    let list = user.animes.filter(a => {
+    const list = user.animes.filter(a => {
       return a[field] === true;
     });
-    console.log('list a', list);
-    // const list = [];
-    list = list.splice(page++ * 20, list.length);
-    console.log('list:', list);
-    return [list.length > 0 ? list : null, user?.animes?.length];
+    page = (page + 1) * nbItemByPage;
+    const max = list?.length;
+    list.splice(page, max);
+    return [list.length > 0 ? list : null, max];
   }
 }
 
