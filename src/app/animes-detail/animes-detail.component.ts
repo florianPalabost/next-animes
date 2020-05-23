@@ -5,6 +5,7 @@ import {NgxUiLoaderService} from 'ngx-ui-loader';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ModalYtVideoComponent} from '../modal-yt-video/modal-yt-video.component';
+import {Anime} from '../model/anime';
 
 @Component({
   selector: 'app-animes-detail',
@@ -14,6 +15,7 @@ import {ModalYtVideoComponent} from '../modal-yt-video/modal-yt-video.component'
 export class AnimesDetailComponent implements OnInit {
   user;
   anime;
+  userAnimeStatus;
 
   @Output() newAnime = new EventEmitter<string>();
 
@@ -27,17 +29,40 @@ export class AnimesDetailComponent implements OnInit {
 
     this.router.paramMap.subscribe(async params => {
       const title = params.get('title');
-      this.anime = title === null ? await this.animesService.retrieveAnime() : await this.animesService.retrievesAnimes('title', title).then(resp => resp?.data[0]);
-      this.animesService.emitTitle(this.anime?.attributes?.canonicalTitle);
+      this.anime = title === null ? await this.animesService.retrieveAnime() :
+        this.animesService.retrieveLocal(title) !==  null ? this.animesService.retrieveLocal(title)[0] :
+          await this.animesService.retrievesAnimes('title', title).then(resp => {
+            const anime = new Anime(resp.data[0]);
+            this.animesService.saveAnime(anime);
+            return anime;
+          });
+      console.log('init', this.anime);
+      this.animesService.emitTitle(this.anime?.attributes?.canonicalTitle || this.anime?.title || '');
+
+
+
     });
 
     this.ngxService.stop();
   }
 
-  updateStatusAnimeUser() {
-    const btn = document.querySelector('#like');
+  updateStatusAnimeUser(btnId: string) {
+    const btn = document.querySelector('#' + btnId);
     btn.getAttribute('class') !== 'mat-icon notranslate mat-warn material-icons' ?
       btn.setAttribute('class', 'mat-icon notranslate mat-warn material-icons') : null;
+
+    switch (btnId) {
+      case 'like':
+        this.anime.userLike = true;
+        break;
+      case 'watched':
+        this.anime.userWatched = true;
+        break;
+      case 'want-to-watch':
+        this.anime.userWantToWatch = true;
+        break;
+    }
+    this.animesService.updateAnime(this.anime);
 
   }
 
@@ -45,7 +70,7 @@ export class AnimesDetailComponent implements OnInit {
   async nextAnime() {
     this.ngxService.start();
     this.anime = await this.animesService.retrieveAnime();
-    this.animesService.emitTitle(this.anime?.attributes?.canonicalTitle);
+    this.animesService.emitTitle(this.anime?.title);
 
     this.ngxService.stop();
   }

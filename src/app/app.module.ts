@@ -28,6 +28,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ModalGenresComponent } from './modal-genres/modal-genres.component';
 import { AnimesDetailComponent } from './animes-detail/animes-detail.component';
 import { ModalYtVideoComponent } from './modal-yt-video/modal-yt-video.component';
+import { ListStatusComponent } from './list-status/list-status.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f55353',
@@ -70,7 +71,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ListComponent,
     ModalGenresComponent,
     AnimesDetailComponent,
-    ModalYtVideoComponent
+    ModalYtVideoComponent,
+    ListStatusComponent
   ],
   imports: [
     BrowserModule,

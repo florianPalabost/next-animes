@@ -1,11 +1,11 @@
 <div layout="column" class="anime">
-  <div *ngIf="anime?.attributes?.coverImage || anime?.attributes?.posterImage" flex class="banniere-img" [style]="'background-image:url(' +  anime.image + ')'">
-    <mat-icon *ngIf="anime?.attributes?.youtubeVideoId" class="mat-icon cursor-link play-video" size="large" (click)="playVideoYT(anime?.attributes?.youtubeVideoId)">play_circle_outline</mat-icon>
+  <div *ngIf="anime?.image" flex class="banniere-img" [style]="'background-image:url(' +  anime.image + ')'">
+    <mat-icon *ngIf="anime?.ytVideoId" class="mat-icon cursor-link play-video" size="large" (click)="playVideoYT(anime?.ytVideoId)">play_circle_outline</mat-icon>
   </div>
   <div flex class="status center-align">
-    <span>Like ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="like" color="primary">favorite</mat-icon></button></span>
-    <span>Watched ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="watched">done_outline</mat-icon></button></span>
-    <span>Want to watch ?  <button class="no-border cursor-link" (click)="updateStatusAnimeUser()"><mat-icon id="want-to-watch">check_circle_outline</mat-icon></button></span>
+    <span>Like ? <mat-icon class="cursor-link" id="like" (click)="updateStatusAnimeUser('like')" [color]="anime?.userLike === true ? 'warn' : 'primary'">favorite</mat-icon></span>
+    <span>Watched ? <mat-icon class="cursor-link" id="watched" (click)="updateStatusAnimeUser('watched')" [color]="anime?.userWatched === true ? 'warn' : 'primary'">done_outline</mat-icon></span>
+    <span>Want to watch ? <mat-icon class="cursor-link" id="want-to-watch" (click)="updateStatusAnimeUser('want-to-watch')" [color]="anime?.userWantToWatch === true ? 'warn' : 'primary'">check_circle_outline</mat-icon></span>
 
   </div>
   <div flex class="infos">
@@ -19,13 +19,13 @@
     </div>
     <div layout="row">
       <h2>Infos</h2>
-      <p *ngIf="anime?.attributes?.averageRating">Score : <span> {{anime?.attributes?.averageRating / 10 | number }} / 10</span></p>
-      <p  *ngIf="anime?.attributes?.startDate">Year : <span> {{anime?.attributes?.startDate | date:'y'}}</span></p>
-      <p *ngIf="anime?.attributes?.status">Status  : <span> {{anime?.attributes?.status }}</span></p>
-      <p *ngIf="anime?.attributes?.episodeCount">Nb episodes  : <span> {{anime?.attributes?.episodeCount | number }}</span></p>
+      <p *ngIf="anime?.rating">Score : <span> {{anime?.rating / 10 | number }} / 10</span></p>
+      <p  *ngIf="anime?.startDate">Year : <span> {{anime?.startDate | date:'y'}}</span></p>
+      <p *ngIf="anime?.status">Status  : <span> {{anime?.status }}</span></p>
+      <p *ngIf="anime?.nbEpisode">Nb episodes  : <span> {{anime?.nbEpisode | number }}</span></p>
     </div>
     <h2>Synopsis</h2>
-    <p *ngIf="anime?.attributes?.synopsis" class="synopsis"> {{anime?.attributes?.synopsis}}</p>
+    <p *ngIf="anime?.synopsis" class="synopsis"> {{anime?.synopsis}}</p>
   </div>
   <div flex class="center-align">
     <button mat-raised-button color="primary" (click)="nextAnime()">Next Anime

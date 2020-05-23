@@ -1,0 +1,17 @@
+<div class="list">
+  <mat-list style="padding: 0"  class="listAnimesScroll">
+    <mat-list-item class="mat-list-item item-animes " *ngFor="let anime of animes" [style]="'background-image:url(' +  anime['image'] + ')'">
+      <div class="flex-container column center-align">
+        <p class="flex-item title-list"><a class="link-black" [href]="'/animes/' + anime?.title">{{anime?.title}}</a></p>
+
+        <mat-chip-list #listGenres *ngIf="anime['genres']" class="flex-item" style="justify-content: center;">
+          <mat-chip class="chip-genres" *ngFor="let genre of anime['genres']" ><a class="" [href]="'/genres/' + genre">{{genre}}</a></mat-chip>
+        </mat-chip-list>
+      </div>
+    </mat-list-item>
+  </mat-list>
+  <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"  [infiniteScrollContainer]="'.mat-sidenav-content'"
+       [fromRoot]="true"
+       (scrolled)="onScroll()"></div>
+  <button *ngIf="max >= 20" (click)="goNext()" class="mat-button">More ...</button>
+</div>

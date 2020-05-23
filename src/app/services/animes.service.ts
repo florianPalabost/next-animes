@@ -34,6 +34,9 @@ export class AnimesService implements OnDestroy{
   }
 
   async retrieveAnime() {
+
+    // test if anime already exist in localstorage
+
     let response;
     if (this.countAnime === 0) {
       response = await this.getAnime(this.ANIMES_API_URL + '?filter[subtype]=TV');
@@ -71,6 +74,7 @@ export class AnimesService implements OnDestroy{
     // handle img anime to show
     anime.image = this.handleImageAnime(anime);
 
+    anime = new Anime(anime);
     // save anime in user animes storage
     this.saveAnime(anime);
     return anime;
@@ -79,7 +83,13 @@ export class AnimesService implements OnDestroy{
 
   saveAnime(anime): void {
     const user = this.userService.retrieveUser();
-    user.animes.push(new Anime(anime));
+    if (anime instanceof Anime) {
+      user.animes.push(anime);
+    }
+    else {
+      user.animes.push(new Anime(anime));
+    }
+
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -135,5 +145,56 @@ export class AnimesService implements OnDestroy{
     return animes;
   }
 
+  updateAnime(anime) {
+    console.log('update', anime);
+    const user = this.userService.retrieveUser();
+    let ctr = 0;
+    user.animes.forEach((a, i) => {
+      if (a.title === anime?.canonicalTitle ||  a.title === anime?.title) {
+        console.log('oui');
+        ctr++;
+        user.animes[i] = anime;
+      }
+    });
+    if (ctr === 0 ) {
+      user.animes.push(new Anime(anime));
+    }
+    localStorage.setItem('user', JSON.stringify(user));
+    // find anime
+  }
+
+  retrieveLocal(title: string) {
+    const user = this.userService.retrieveUser();
+    const listAnimes =  user.animes.filter(a => {
+      if (a.title === title) {
+        return a;
+      }
+    });
+    return listAnimes.length > 0 ? listAnimes : null;
+  }
+
+  retrieveLocalAnimesWithStatus(status: string, page: number) {
+    const user = this.userService.retrieveUser();
+    let field = null;
+    switch (status) {
+      case 'favorite':
+        field = 'userLike';
+        break;
+      case 'watched':
+        field = 'userWatched';
+        break;
+      case 'want-to-watch':
+        field = 'userWantToWatch';
+        break;
+    }
+    let list = user.animes.filter(a => {
+      return a[field] === true;
+    });
+    console.log('list a', list);
+    // const list = [];
+    list = list.splice(page++ * 20, list.length);
+    console.log('list:', list);
+    return [list.length > 0 ? list : null, user?.animes?.length];
+  }
 }
 

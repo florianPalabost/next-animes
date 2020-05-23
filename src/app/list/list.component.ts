@@ -27,7 +27,7 @@ export class ListComponent implements OnInit {
             this.responseAnimes = await this.animesService.retrievesAnimes('genres', params.get('genres'));
           }
         }
-        this.animesService.emitUrl('animes/search');
+        this.animesService.emitUrl('animes/searchs');
       }
       else {
         if (params.get('genre') !== '') {

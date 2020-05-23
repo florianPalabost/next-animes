@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterContentChecked, AfterViewInit, Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ModalGenresComponent} from '../../modal-genres/modal-genres.component';
 import {AnimesService} from '../../services/animes.service';
@@ -8,7 +8,7 @@ import {AnimesService} from '../../services/animes.service';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, AfterViewInit {
   firstConnection = true;
   newTitle = '';
   url;
@@ -30,16 +30,19 @@ export class NavComponent implements OnInit {
     if (localStorage.getItem('user') !== null) {
       this.firstConnection = false;
     }
-
-    this.animesService.subscriber$.subscribe((data: string) => {
-      this.newTitle = data;
+    // need to async/await because ExpressionChangedAfterItHasBeenCheckedError else
+    this.animesService.subscriber$.subscribe(async (data: string) => {
+      this.newTitle = await data;
     });
-
     this.animesService.urlSubscriber$.subscribe((data: string) => {
       this.url = data;
     });
   }
 
+  ngAfterViewInit() {
+
+
+  }
   onRegistered(registered: boolean) {
     this.firstConnection = !registered;
   }
