@@ -21,6 +21,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxUiLoaderConfig, NgxUiLoaderModule} from 'ngx-ui-loader';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { ListComponent } from './list/list.component';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ModalGenresComponent } from './modal-genres/modal-genres.component';
+import { AnimesDetailComponent } from './animes-detail/animes-detail.component';
+import { ModalYtVideoComponent } from './modal-yt-video/modal-yt-video.component';
+import { ListStatusComponent } from './list-status/list-status.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f55353',
@@ -58,7 +66,13 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AppComponent,
     NavComponent,
     AnimesComponent,
-    RegisterComponent
+    RegisterComponent,
+    TruncatePipe,
+    ListComponent,
+    ModalGenresComponent,
+    AnimesDetailComponent,
+    ModalYtVideoComponent,
+    ListStatusComponent
   ],
   imports: [
     BrowserModule,
@@ -71,10 +85,12 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MatListModule,
     MatChipsModule,
     MatCardModule,
+    MatDialogModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     HttpClientModule,
+    InfiniteScrollModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],

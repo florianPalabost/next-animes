@@ -27,7 +27,14 @@
 }
 
 .cursor-link {
-cursor: pointer;
+  cursor: pointer;
+}
+.play-video {
+  display:block;
+  margin:auto;
+  padding-top: 15%;
+  font-size: 100px;
+  width: 100px;
 }
 
 .chip-genres {

@@ -1,0 +1,35 @@
+<div layout="column" class="anime">
+  <div *ngIf="anime?.image" flex class="banniere-img" [style]="'background-image:url(' +  anime.image + ')'">
+    <mat-icon *ngIf="anime?.ytVideoId" class="mat-icon cursor-link play-video" size="large" (click)="playVideoYT(anime?.ytVideoId)">play_circle_outline</mat-icon>
+  </div>
+  <div flex class="status center-align">
+    <span>Like ? <mat-icon class="cursor-link" id="like" (click)="updateStatusAnimeUser('like')" [color]="anime?.userLike === true ? 'warn' : 'primary'">favorite</mat-icon></span>
+    <span>Watched ? <mat-icon class="cursor-link" id="watched" (click)="updateStatusAnimeUser('watched')" [color]="anime?.userWatched === true ? 'warn' : 'primary'">done_outline</mat-icon></span>
+    <span>Want to watch ? <mat-icon class="cursor-link" id="want-to-watch" (click)="updateStatusAnimeUser('want-to-watch')" [color]="anime?.userWantToWatch === true ? 'warn' : 'primary'">check_circle_outline</mat-icon></span>
+
+  </div>
+  <div flex class="infos">
+
+    <div layout="row" style="display: inline-flex; margin-top: 1em">
+      <h3>Genres</h3>
+      <mat-chip-list *ngIf="anime?.genres">
+        <mat-chip *ngFor="let genre of anime.genres" ><a class="chip-genres" [href]="'/genres/' + genre">{{genre}}</a></mat-chip>
+      </mat-chip-list>
+
+    </div>
+    <div layout="row">
+      <h2>Infos</h2>
+      <p *ngIf="anime?.rating">Score : <span> {{anime?.rating / 10 | number }} / 10</span></p>
+      <p  *ngIf="anime?.startDate">Year : <span> {{anime?.startDate | date:'y'}}</span></p>
+      <p *ngIf="anime?.status">Status  : <span> {{anime?.status }}</span></p>
+      <p *ngIf="anime?.nbEpisode">Nb episodes  : <span> {{anime?.nbEpisode | number }}</span></p>
+    </div>
+    <h2>Synopsis</h2>
+    <p *ngIf="anime?.synopsis" class="synopsis"> {{anime?.synopsis}}</p>
+  </div>
+  <div flex class="center-align">
+    <button mat-raised-button color="primary" (click)="nextAnime()">Next Anime
+      <mat-icon>arrow_right_alt</mat-icon>
+    </button>
+  </div>
+</div>
