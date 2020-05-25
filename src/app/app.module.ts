@@ -10,7 +10,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
-import { AnimesComponent } from './animes/animes.component';
 import {MatChipsModule} from '@angular/material/chips';
 import { RegisterComponent } from './register/register.component';
 import {MatCardModule} from '@angular/material/card';
@@ -29,6 +28,8 @@ import { ModalGenresComponent } from './modal-genres/modal-genres.component';
 import { AnimesDetailComponent } from './animes-detail/animes-detail.component';
 import { ModalYtVideoComponent } from './modal-yt-video/modal-yt-video.component';
 import { ListStatusComponent } from './list-status/list-status.component';
+import { RecommendationsComponent } from './recommendations/recommendations.component';
+import { NoPageFoundComponent } from './layout/no-page-found/no-page-found.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f55353',
@@ -65,14 +66,15 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   declarations: [
     AppComponent,
     NavComponent,
-    AnimesComponent,
     RegisterComponent,
     TruncatePipe,
     ListComponent,
     ModalGenresComponent,
     AnimesDetailComponent,
     ModalYtVideoComponent,
-    ListStatusComponent
+    ListStatusComponent,
+    RecommendationsComponent,
+    NoPageFoundComponent
   ],
   imports: [
     BrowserModule,

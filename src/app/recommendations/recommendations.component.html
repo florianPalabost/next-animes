@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Recommandations</h2>
+
+<mat-dialog-content style="overflow: inherit;">
+  <mat-list style="padding: 0"  class="listAnimesScroll" *ngIf="animes?.length > 0">
+    <mat-list-item class="mat-list-item item-animes " *ngFor="let anime of animes" [style]="'background-image:url(' +  anime?.image + ')'">
+      <div class="flex-container column center-align">
+        <p class="flex-item title-list"><a class="link-black" [href]="'/animes/' + anime?.title">{{anime?.title}}</a></p>
+
+        <mat-chip-list #listGenres *ngIf="anime['genres']" class="flex-item" style="justify-content: center;">
+          <mat-chip class="chip-genres" *ngFor="let genre of anime['genres']" ><a class="" [href]="'/genres/' + genre">{{genre}}</a></mat-chip>
+        </mat-chip-list>
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+  <mat-dialog-actions>
+    <button class="mat-raised-button" (click)="close()">Close</button>
+    <button class="mat-raised-button mat-primary" (click)="reload()">Another  recommandations</button>
+  </mat-dialog-actions>
+</mat-dialog-content>

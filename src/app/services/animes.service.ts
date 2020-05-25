@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
 import {Anime} from '../model/anime';
 import {Subject} from 'rxjs';
+import {User} from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -194,5 +195,73 @@ export class AnimesService implements OnDestroy{
     list.splice(page, max);
     return [list.length > 0 ? list : null, max];
   }
+
+  async findRecommandations(user: User = null) {
+    if (user !== null) {
+      // get the genres of each animes & count each genres & class them & order
+      const genres = this.getAnimesGenres(user.animes);
+
+      // get top X
+      const [first, second, third]: any = genres;
+      console.log([first.el, second.el, third.el]);
+      // find animes API with top X genres -> get 10 animes
+      const resp = await this.retrievesAnimes('genres', [first.el, second.el, third.el].join());
+      // pick 3 animes randomly
+      const animes = this.pickRandom(3, resp?.data);
+      // check if anime already exist
+      animes.forEach(async (anime, ind) => {
+        let alreadySeen = this.checkAlreadySeen(anime, user.animes);
+        let i = 0;
+        while (alreadySeen === true) {
+          if (i > 10 ) {
+            const idAnimeRand = this.getRandomNb(this.countAnime);
+            const response = await this.getAnime(this.ANIMES_API_URL + '?page%5Blimit%5D=10&page%5Boffset%5D=' + idAnimeRand + '&filter[genres]=' + [first.el, second.el, third.el].join() + '&filter[subtype]=TV');
+            animes[ind] = this.pickRandom(1, response.data);
+          }
+          else {
+            animes[ind] = this.pickRandom(1, resp.data);
+          }
+          alreadySeen = this.checkAlreadySeen(anime, user.animes);
+          i++;
+        }
+
+      });
+      console.log('animes ?', animes);
+      animes.forEach((a, index) => {
+        animes[index] = new Anime(a);
+      });
+      return animes;
+
+    }
+    return [];
+  }
+
+  private getAnimesGenres(animes: Anime[]) {
+    if (animes.length > 0) {
+      // get the genres of each animes
+      let genres = animes.map(a => {
+        return a.genres;
+      });
+      genres = Array.prototype.concat.apply([], genres);
+
+      // count each genres & claass/order them
+      genres = this.countDuplicates(genres);
+
+      genres.sort((a: any, b: any) => (b.count > a.count) ? 1 : ((a.count > b.count) ? -1 : 0));
+      console.log('genres sort: ', genres);
+      return genres;
+    }
+    return [];
+  }
+
+  countDuplicates(arr = []) {
+    return arr.reduce((b, c) => ((b[b.findIndex(d => d.el === c)] || b[b.push({el: c, count: 0}) - 1]).count++, b), []);
+  }
+
+  pickRandom(n = 0, arr = []) {
+    return arr.sort(() => Math.random() - Math.random()).slice(0, n);
+
+  }
 }
+
 
