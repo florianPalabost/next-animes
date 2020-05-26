@@ -2,10 +2,10 @@
   <mat-list style="padding: 0"  class="listAnimesScroll">
     <mat-list-item class="mat-list-item item-animes " *ngFor="let anime of animes" [style]="'background-image:url(' +  anime['image'] + ')'">
       <div class="flex-container column center-align" style="width: 300px; overflow: hidden">
-        <p class="flex-item title-list"><a class="link-black" [href]="'/animes/' + anime['attributes'].canonicalTitle">{{anime['attributes'].canonicalTitle}}</a></p>
+        <p class="flex-item title-list"><a target="_blank" rel="noopener noferrer" class="link-black" [href]="'/animes/' + anime['attributes'].canonicalTitle">{{anime['attributes'].canonicalTitle}}</a></p>
 
         <mat-chip-list #listGenres *ngIf="anime['genres']" class="flex-item" style="justify-content: center;">
-          <mat-chip class="chip-genres" *ngFor="let genre of anime['genres']" ><a class="" [href]="'/genres/' + genre">{{genre}}</a></mat-chip>
+          <mat-chip class="chip-genres" *ngFor="let genre of anime['genres']" ><a target="_blank" rel="noopener noreferrer" class="" [href]="'/genres/' + genre">{{genre}}</a></mat-chip>
         </mat-chip-list>
       </div>
     </mat-list-item>

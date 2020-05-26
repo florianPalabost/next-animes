@@ -14,9 +14,9 @@ export class RecommendationsComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<RecommendationsComponent>, private animesService: AnimesService, private userService: UserService) { }
 
   async ngOnInit() {
-    console.log('recommendations');
     this.user = this.userService.retrieveUser();
     this.animes = await this.animesService.findRecommandations(this.user);
+    console.log('comp animes', this.animes);
   }
 
   close() {
@@ -24,6 +24,6 @@ export class RecommendationsComponent implements OnInit {
   }
 
   async reload() {
-    this.animes = await this.animesService.findRecommandations(this.user);
+    this.animes = await this.animesService.findRecommandations(this.user, true);
   }
 }
