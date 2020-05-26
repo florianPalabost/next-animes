@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "surge": "ng build --prod && cd dist/next-animes && surge --domain https://next-animes-flo.surge.sh"
+    "surge": "ng build --prod && surge ./dist/next-animes --domain=https://next-animes-flo.surge.sh"
   },
   "private": true,
   "dependencies": {

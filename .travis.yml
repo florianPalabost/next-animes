@@ -9,4 +9,4 @@ before_script:
   - npm install -g @angular/cli
   - npm install -g surge
 script:
-  - npm run surge
+  - npm run surge -y
