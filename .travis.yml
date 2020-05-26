@@ -7,5 +7,6 @@ branches:
     - master
 before_script:
   - npm install -g @angular/cli
+  - npm install -g surge
 script:
   - npm run surge
