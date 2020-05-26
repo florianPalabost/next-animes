@@ -36,7 +36,6 @@ export class AnimesDetailComponent implements OnInit {
             this.animesService.saveAnime(anime);
             return anime;
           });
-      console.log('init', this.anime);
       this.animesService.emitTitle(this.anime?.attributes?.canonicalTitle || this.anime?.title || '');
 
 

@@ -29,6 +29,6 @@ export class RegisterComponent implements OnInit {
     await this.userService.createUser(this.userForm.value.username);
     // say to the parent component that we have a new register
     this.registered.emit(true);
-    // await this.router.navigate(['/']);
+    await this.router.navigate(['/']);
   }
 }

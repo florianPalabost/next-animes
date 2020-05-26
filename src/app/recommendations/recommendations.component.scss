@@ -82,7 +82,8 @@ div.mat-chip-list-wrapper {
 
 }
 
-//.list {
-//  height: 950px;
-//  overflow-y: scroll;
-//}
+.close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}

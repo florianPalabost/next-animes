@@ -5,22 +5,24 @@ import {AnimesService} from '../../services/animes.service';
 import {RecommendationsComponent} from '../../recommendations/recommendations.component';
 import {Subject} from 'rxjs';
 import {MatSidenav} from '@angular/material/sidenav';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
-export class NavComponent implements OnInit, AfterViewInit {
+export class NavComponent implements OnInit {
   firstConnection = true;
   newTitle = '';
   url;
+  username = '';
   opened = true;
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
 
 
   genres = ['Comedy', 'Action', 'Adventure', 'Drama', 'Sci-Fi', 'Slice of Life', 'Space', 'Mystery', 'School', 'Magic', 'Supernatural', 'Police', 'Fantasy', 'Sports', 'Ecchi', 'Romance', 'Military', 'Samurai', 'Demons', 'Mecha', 'Racing', 'Cars', 'Horror', 'Psychological', 'Thriller', 'Martial Arts'];
-  constructor(private dialog: MatDialog, private animesService: AnimesService) {
+  constructor(private dialog: MatDialog, private animesService: AnimesService, private  userService: UserService) {
   }
   widthScreen = window.innerWidth;
 
@@ -44,6 +46,7 @@ export class NavComponent implements OnInit, AfterViewInit {
     }
     if (localStorage.getItem('user') !== null) {
       this.firstConnection = false;
+      this.username = this.userService.retrieveUser().username;
     }
     // need to async/await because ExpressionChangedAfterItHasBeenCheckedError else
     this.animesService.subscriber$.subscribe(async (data: string) => {
@@ -53,19 +56,6 @@ export class NavComponent implements OnInit, AfterViewInit {
       this.url = await data;
     });
   }
-
-  ngAfterViewInit() {
-
-
-  }
-  onRegistered(registered: boolean) {
-    this.firstConnection = !registered;
-  }
-
-  onNewAnime(newAnimeTitle: string) {
-    this.newTitle = newAnimeTitle;
-  }
-
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();

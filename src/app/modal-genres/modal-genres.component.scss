@@ -1,6 +1,10 @@
 @media screen and (max-width: 800px){
-
   mat-selection-list .select {
     max-height: 30vw;
   }
+}
+.close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
 }
