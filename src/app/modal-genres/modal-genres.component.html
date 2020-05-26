@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Filtres</h2>
 
 <mat-dialog-content style="overflow: inherit;">
-
+  <mat-icon class="close link" (click)="close()">cancel</mat-icon>
   <form [formGroup]="formFilter">
     <mat-form-field>
       <input matInput formControlName="title" type="text" placeholder="Title">
@@ -12,7 +12,7 @@
       </mat-list-option>
     </mat-selection-list>
   </form>
-<mat-dialog-actions>
-  <button class="mat-raised-button" (click)="close()">Close</button>
-  <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
-</mat-dialog-actions>
+  <mat-dialog-actions>
+    <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
+  </mat-dialog-actions>
+</mat-dialog-content>

@@ -10,6 +10,7 @@ import {NgxUiLoaderService} from 'ngx-ui-loader';
 })
 export class ListStatusComponent implements OnInit {
   animes: any = [];
+  recommendations: any = [];
   page = 0;
   animesYet = 0;
   max = 0;
@@ -26,6 +27,7 @@ export class ListStatusComponent implements OnInit {
 
       this.animesYet = this.max - this.animes?.length;
       //  max dont take the last entry so max += 1
+
       this.ngxService.stop();
     });
   }

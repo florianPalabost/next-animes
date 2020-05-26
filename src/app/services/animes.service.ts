@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
 import {Anime} from '../model/anime';
 import {Subject} from 'rxjs';
+import {User} from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -109,11 +110,17 @@ export class AnimesService implements OnDestroy{
 
   checkAlreadySeen(anime = null, animes = []): boolean {
     let seen = false;
-    animes.forEach(a => {
-        if (a.title === anime.attributes.canonicalTitle) {
+    if (animes.length > 0) {
+      animes.forEach(a => {
+        if (a.title === anime?.attributes?.canonicalTitle) {
           seen = true;
         }
-    });
+      });
+    }
+    else {
+      throw new Error('animes array empty !');
+    }
+
     return seen;
   }
 
@@ -161,6 +168,7 @@ export class AnimesService implements OnDestroy{
   }
 
   retrieveLocal(title: string) {
+    console.log('retrieve local');
     const user = this.userService.retrieveUser();
     const listAnimes =  user.animes.filter(a => {
       if (a.title === title) {
@@ -194,5 +202,111 @@ export class AnimesService implements OnDestroy{
     list.splice(page, max);
     return [list.length > 0 ? list : null, max];
   }
+
+  async findRecommandations(user: User = null, reload: boolean = false) {
+    if (user !== null) {
+      // get the genres of each animes & count each genres & class them & order
+      const genres = this.getAnimesGenres(user.animes);
+
+      // get top X
+      const [first, second, third]: any = genres;
+      console.log([first.el, second.el, third.el]);
+      // find animes API with top X genres -> get 10 animes
+
+      // tslint:disable-next-line:max-line-length
+      const resp = await this.getAnime(this.ANIMES_API_URL + '?filter[genres]=' + [first.el, second.el, third.el].join() + '&filter[subtype]=TV');
+
+      // we'll know how many recommandations we can have
+      this.countAnime = resp?.meta?.count;
+      // pick 3 animes randomly
+      const animes = this.pickRandom(3, resp?.data);
+      // check if anime already exist
+      animes.forEach(async (anime, ind) => {
+        let alreadySeen = this.checkAlreadySeen(anime, user.animes);
+        // to avoid to have the same anime in reload recommandations
+        let i = reload ? 11 : 0;
+
+        while (alreadySeen === true) {
+          if (i > 10 ) {
+            const idAnimeRand = this.getRandomNb(this.countAnime);
+            const response = await this.getAnime(this.ANIMES_API_URL + '?filter[genres]=' + [first.el, second.el, third.el].join() + '&filter[subtype]=TV&page%5Blimit%5D=10&page%5Boffset%5D=' + idAnimeRand);
+            const newPick = this.pickRandom(1, response.data);
+            animes[ind] = newPick || newPick[0] ;
+
+            console.log('i>10 animes', animes[ind]);
+          }
+          else {
+            const newPick = this.pickRandom(1, resp.data);
+            animes[ind] = newPick || newPick[0] ;
+            resp.data = resp.data.filter(o => {
+              return o !== animes[ind];
+            });
+          }
+          alreadySeen = this.checkAlreadySeen(animes[ind], user.animes);
+          console.log(`already seen : ${alreadySeen} with anime :`);
+          console.log('->', animes[ind]);
+          i++;
+        }
+
+      });
+      console.log('animes ?', animes);
+      if (animes.length > 0) {
+        animes.forEach((a, index) => {
+          if (a !== undefined) {
+            console.log('a', a);
+            if (a instanceof Array) {
+              console.log('has 0');
+              animes[index].image = this.handleImageAnime(animes[index]);
+              animes[index] = new Anime(a[0]);
+            }
+            else {
+              console.log('not 0');
+              animes[index].image = this.handleImageAnime(animes[index]);
+              animes[index] = new Anime(a);
+            }
+          }
+          else {
+            // get one new anime
+            throw new Error('anime undefined !');
+          }
+        });
+        return animes;
+      }
+      else {
+        throw  new Error('animes recommandation arr NULL length !');
+      }
+
+
+    }
+    return [];
+  }
+
+  private getAnimesGenres(animes: Anime[]) {
+    if (animes.length > 0) {
+      // get the genres of each animes
+      let genres = animes.map(a => {
+        return a.genres;
+      });
+      genres = Array.prototype.concat.apply([], genres);
+
+      // count each genres & claass/order them
+      genres = this.countDuplicates(genres);
+
+      genres.sort((a: any, b: any) => (b.count > a.count) ? 1 : ((a.count > b.count) ? -1 : 0));
+      console.log('genres sort: ', genres);
+      return genres;
+    }
+    return [];
+  }
+
+  countDuplicates(arr = []) {
+    return arr.reduce((b, c) => ((b[b.findIndex(d => d.el === c)] || b[b.push({el: c, count: 0}) - 1]).count++, b), []);
+  }
+
+  pickRandom(n = 0, arr = []) {
+    return arr.sort(() => Math.random() - Math.random()).slice(0, n);
+
+  }
 }
+
 

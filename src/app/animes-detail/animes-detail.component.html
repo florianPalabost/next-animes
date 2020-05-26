@@ -24,8 +24,11 @@
       <p *ngIf="anime?.status">Status  : <span> {{anime?.status }}</span></p>
       <p *ngIf="anime?.nbEpisode">Nb episodes  : <span> {{anime?.nbEpisode | number }}</span></p>
     </div>
-    <h2>Synopsis</h2>
-    <p *ngIf="anime?.synopsis" class="synopsis"> {{anime?.synopsis}}</p>
+    <div layout="row" *ngIf="anime?.synopsis">
+      <h2>Synopsis</h2>
+      <p class="synopsis"> {{anime?.synopsis}}</p>
+    </div>
+
   </div>
   <div flex class="center-align">
     <button mat-raised-button color="primary" (click)="nextAnime()">Next Anime

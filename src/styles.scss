@@ -3,6 +3,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+// yt modal
 .custom-modalbox {
   mat-dialog-container {
     background: transparent;
@@ -13,4 +14,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   mat-dialog-content {
     overflow: hidden;
   }
+}
+
+.link {
+  cursor: pointer;
 }
